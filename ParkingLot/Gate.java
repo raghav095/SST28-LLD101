@@ -1,16 +1,14 @@
 public class Gate {
     private final int gateID;
     private final GateType type;
-    private final int floorNumber;
 
-    enum GateType{
+    public enum GateType{
         ENTRY, EXIT;
     }
 
-    public Gate(int gateID, GateType type, int floorNumber) {
+    public Gate(int gateID, GateType type) {
         this.gateID = gateID;
         this.type = type;
-        this.floorNumber = floorNumber;
     }
 
     public int getGateID() {
@@ -20,9 +18,4 @@ public class Gate {
     public GateType getType() {
         return type;
     }
-
-    public int getFloorNumber() {
-        return floorNumber;
-    }
-    
 }

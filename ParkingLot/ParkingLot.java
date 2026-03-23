@@ -19,12 +19,7 @@ public class ParkingLot {
 
     public Gate getGateById(int gateId) {
         for (ParkingFLoor floor : floors) {
-            for (Gate g : floor.getEntryGate()) {
-                if (g.getGateID() == gateId) {
-                    return g;
-                }
-            }
-            for (Gate g : floor.getExitGate()) {
+            for (Gate g : floor.getGates()) {
                 if (g.getGateID() == gateId) {
                     return g;
                 }

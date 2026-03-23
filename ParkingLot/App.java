@@ -4,15 +4,15 @@ import java.util.Map;
 public class App {
     public static void main(String[] args) {
         
-        Gate gate1 = new Gate(1, Gate.GateType.ENTRY, 1);
-        Gate gate2 = new Gate(2, Gate.GateType.EXIT, 1);
+        Gate gate1 = new Gate(1, Gate.GateType.ENTRY);
+        Gate gate2 = new Gate(2, Gate.GateType.EXIT);
 
         ParkingSlot slot1 = new ParkingSlot(101, 1, ParkingSlot.SlotType.SMALL);
         ParkingSlot slot2 = new ParkingSlot(102, 1, ParkingSlot.SlotType.MEDIUM);
         ParkingSlot slot3 = new ParkingSlot(201, 2, ParkingSlot.SlotType.LARGE);
 
-        ParkingFLoor floor1 = new ParkingFLoor(1, Arrays.asList(gate1), Arrays.asList(gate2), Arrays.asList(slot1, slot2));
-        ParkingFLoor floor2 = new ParkingFLoor(2, Arrays.asList(), Arrays.asList(), Arrays.asList(slot3));
+        ParkingFLoor floor1 = new ParkingFLoor(1, Arrays.asList(gate1, gate2), Arrays.asList(slot1, slot2));
+        ParkingFLoor floor2 = new ParkingFLoor(2, Arrays.asList(), Arrays.asList(slot3));
 
         ParkingLot parkingLot = new ParkingLot("Central Parking", Arrays.asList(floor1, floor2));
 

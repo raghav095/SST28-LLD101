@@ -51,12 +51,16 @@ public class ParkingSlot {
         return parkedVehicle;
     }
 
-    public void parkVehicle(Vehicle vehicle) {
+    public synchronized boolean tryOccupy(Vehicle vehicle) {
+        if (this.isOccupied) {
+            return false;
+        }
         this.isOccupied = true;
         this.parkedVehicle = vehicle;
+        return true;
     }
 
-    public void removeVehicle() {
+    public synchronized void removeVehicle() {
         this.isOccupied = false;
         this.parkedVehicle = null;
     }

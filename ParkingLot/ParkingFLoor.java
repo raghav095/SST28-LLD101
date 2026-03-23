@@ -1,15 +1,13 @@
 import java.util.List;
 
 public class ParkingFLoor {
-    private final  int floorNumber;
-    private final List<Gate> entryGate;
-    private final   List<Gate> exitGate;
+    private final int floorNumber;
+    private final List<Gate> gates;
     private final List<ParkingSlot> slots;
 
-    public ParkingFLoor(int floorNumber, List<Gate> entryGate, List<Gate> exitGate, List<ParkingSlot> slots) {
+    public ParkingFLoor(int floorNumber, List<Gate> gates, List<ParkingSlot> slots) {
         this.floorNumber = floorNumber;
-        this.entryGate = entryGate;
-        this.exitGate = exitGate;
+        this.gates = gates;
         this.slots = slots;
     }
 
@@ -21,14 +19,7 @@ public class ParkingFLoor {
         return slots;
     }
 
-    public List<Gate> getEntryGate() {
-        return entryGate;
+    public List<Gate> getGates() {
+        return gates;
     }
-
-    public List<Gate> getExitGate() {
-        return exitGate;
-    }
-
-    
-
 }

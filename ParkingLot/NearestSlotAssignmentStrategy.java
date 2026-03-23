@@ -12,7 +12,17 @@ public class NearestSlotAssignmentStrategy implements SlotAssignmentStrategy {
         List<ParkingSlot.SlotType> compatible = getCompatibleSlots(vehicle.getType());
         ParkingSlot bestSlot = null;
         int minDistance = Integer.MAX_VALUE;
-        int gateFloor = entryGate.getFloorNumber();
+        int gateFloor = -1;
+        for (ParkingFLoor f : lot.getFloors()) {
+            if (f.getGates().contains(entryGate)) {
+                gateFloor = f.getFloorNumber();
+                break;
+            }
+        }
+        
+        if (gateFloor == -1) {
+            throw new IllegalArgumentException("Entry Gate not found in any floor");
+        }
 
         for (ParkingSlot.SlotType typeToSearch : compatible) {
             if (bestSlot != null) break; 
