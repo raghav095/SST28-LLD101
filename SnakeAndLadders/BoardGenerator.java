@@ -13,33 +13,40 @@ public class BoardGenerator {
         int numberOfLadders = size;
 
         Random random = new Random();
-        Set<Integer> usedStarts = new HashSet<>();
+        Set<Integer> usedCells = new HashSet<>();
+        int maxAttempts = 10000;
 
       
         int laddersAdded = 0;
-        while (laddersAdded < numberOfLadders) {
-            int start = random.nextInt(totalCells - 1) + 2; 
+        int attempts = 0;
+        while (laddersAdded < numberOfLadders && attempts < maxAttempts) {
+            attempts++;
+            int start = random.nextInt(totalCells - 2) + 2; 
             int end = random.nextInt(totalCells - start) + start + 1;
 
             if (start >= end) continue;
-            if (usedStarts.contains(start)) continue;
+            if (usedCells.contains(start) || usedCells.contains(end)) continue;
 
             board.addJump(start, end);
-            usedStarts.add(start);
+            usedCells.add(start);
+            usedCells.add(end);
             laddersAdded++;
         }
 
        
         int snakesAdded = 0;
-        while (snakesAdded < numberOfSnakes) {
-            int start = random.nextInt(totalCells - 1) + 2; 
+        attempts = 0;
+        while (snakesAdded < numberOfSnakes && attempts < maxAttempts) {
+            attempts++;
+            int start = random.nextInt(totalCells - 2) + 2; 
             int end = random.nextInt(start - 1) + 1;
 
             if (start <= end) continue;
-            if (usedStarts.contains(start)) continue;
+            if (usedCells.contains(start) || usedCells.contains(end)) continue;
 
             board.addJump(start, end);
-            usedStarts.add(start);
+            usedCells.add(start);
+            usedCells.add(end);
             snakesAdded++;
         }
 

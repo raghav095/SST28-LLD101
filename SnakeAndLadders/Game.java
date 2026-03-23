@@ -20,8 +20,17 @@ public class Game {
     }
 
     public void startGame() {
-        while (!isGameOver) {
+        int playersWon = 0;
+        int totalPlayers = players.size();
+        int gameEndThreshold = totalPlayers > 1 ? totalPlayers - 1 : 1;
+
+        while (!isGameOver && playersWon < gameEndThreshold) {
             Player currentPlayer = players.get(currentPlayerIndex);
+
+            if (currentPlayer.getPosition() == board.getTotalCells()) {
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                continue;
+            }
 
             int oldPosition = currentPlayer.getPosition();
             int diceRoll = dice.roll();
@@ -49,15 +58,18 @@ public class Game {
 
       
             if (finalPosition == board.getTotalCells()) {
-                isGameOver = true;
                 logger.logWin(currentPlayer);
-                break;
+                playersWon++;
+                if (playersWon >= gameEndThreshold) {
+                    isGameOver = true;
+                    break;
+                }
             }
 
           
             boolean continueTurn = rule.shouldContinueTurn(currentPlayer, diceRoll);
 
-            if (continueTurn) {
+            if (continueTurn && finalPosition != board.getTotalCells()) {
                 logger.logExtraTurn(currentPlayer);
             } else {
                 currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
