@@ -1,11 +1,11 @@
 import java.util.List;
 
-public class ParkingFLoor {
+public class ParkingFloor {
     private final int floorNumber;
     private final List<Gate> gates;
     private final List<ParkingSlot> slots;
 
-    public ParkingFLoor(int floorNumber, List<Gate> gates, List<ParkingSlot> slots) {
+    public ParkingFloor(int floorNumber, List<Gate> gates, List<ParkingSlot> slots) {
         this.floorNumber = floorNumber;
         this.gates = gates;
         this.slots = slots;

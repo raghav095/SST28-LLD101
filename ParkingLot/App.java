@@ -11,8 +11,8 @@ public class App {
         ParkingSlot slot2 = new ParkingSlot(102, 1, ParkingSlot.SlotType.MEDIUM);
         ParkingSlot slot3 = new ParkingSlot(201, 2, ParkingSlot.SlotType.LARGE);
 
-        ParkingFLoor floor1 = new ParkingFLoor(1, Arrays.asList(gate1, gate2), Arrays.asList(slot1, slot2));
-        ParkingFLoor floor2 = new ParkingFLoor(2, Arrays.asList(), Arrays.asList(slot3));
+        ParkingFloor floor1 = new ParkingFloor(1, Arrays.asList(gate1, gate2), Arrays.asList(slot1, slot2));
+        ParkingFloor floor2 = new ParkingFloor(2, Arrays.asList(), Arrays.asList(slot3));
 
         ParkingLot parkingLot = new ParkingLot("Central Parking", Arrays.asList(floor1, floor2));
 

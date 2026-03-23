@@ -13,7 +13,7 @@ public class NearestSlotAssignmentStrategy implements SlotAssignmentStrategy {
         ParkingSlot bestSlot = null;
         int minDistance = Integer.MAX_VALUE;
         int gateFloor = -1;
-        for (ParkingFLoor f : lot.getFloors()) {
+        for (ParkingFloor f : lot.getFloors()) {
             if (f.getGates().contains(entryGate)) {
                 gateFloor = f.getFloorNumber();
                 break;
@@ -26,7 +26,7 @@ public class NearestSlotAssignmentStrategy implements SlotAssignmentStrategy {
 
         for (ParkingSlot.SlotType typeToSearch : compatible) {
             if (bestSlot != null) break; 
-            for (ParkingFLoor floor : lot.getFloors()) {
+            for (ParkingFloor floor : lot.getFloors()) {
                 for (ParkingSlot slot : floor.getSlots()) {
                     if (!slot.isOccupied() && slot.getType() == typeToSearch) {
                         int dist = Math.abs(floor.getFloorNumber() - gateFloor) * 1000 + slot.getSlotNumber();
