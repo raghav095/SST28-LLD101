@@ -5,27 +5,46 @@ public class ShowSeat {
     private SeatType type;
     private double price;
 
-    private boolean isBooked;
+    private SeatStatus status;
+    private long lockedAt;
 
     public ShowSeat(int id, Seat seat, SeatType type, double price) {
         this.id = id;
         this.seat = seat;
         this.type = type;
         this.price = price;
-        this.isBooked = false;
+        this.status = SeatStatus.AVAILABLE;
+        this.lockedAt = 0;
     }
 
-    public synchronized boolean book() {
-        if (isBooked) return false;
-        isBooked = true;
-        return true;
+    // Attempt to temporarily lock a seat. Automatically overrides locks older than 10 minutes.
+    public synchronized boolean lockSeat() {
+        long now = System.currentTimeMillis();
+        
+        if (status == SeatStatus.AVAILABLE || 
+           (status == SeatStatus.LOCKED && (now - lockedAt) > 10 * 60 * 1000)) {
+            
+            status = SeatStatus.LOCKED;
+            lockedAt = now;
+            return true;
+        }
+        return false;
+    }
+
+    public synchronized void confirmBooking() {
+        if (status == SeatStatus.LOCKED) {
+            status = SeatStatus.BOOKED;
+            lockedAt = 0;
+        }
     }
 
     public synchronized void release() {
-        isBooked = false;
+        status = SeatStatus.AVAILABLE;
+        lockedAt = 0;
     }
 
+    public int getId() { return id; }
     public SeatType getType() { return type; }
     public double getPrice() { return price; }
-    public boolean isBooked() { return isBooked; }
+    public SeatStatus getStatus() { return status; }
 }

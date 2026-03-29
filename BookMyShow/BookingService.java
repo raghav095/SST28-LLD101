@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -11,31 +12,48 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public Booking book(Show show, List<ShowSeat> seats, PaymentMode mode) {
-        List<ShowSeat> successfullyBooked = new ArrayList<>();
+    public Booking book(User user, Show show, List<ShowSeat> seats, PaymentMode mode) {
+        List<ShowSeat> successfullyLocked = new ArrayList<>();
+
+        // Prevent deadlocks by sorting elements mathematically
+        seats.sort(Comparator.comparingInt(ShowSeat::getId));
 
         for (ShowSeat seat : seats) {
-            if (!seat.book()) {
-                for (ShowSeat booked : successfullyBooked) {
+            if (!seat.lockSeat()) {
+                for (ShowSeat booked : successfullyLocked) {
                     booked.release();
                 }
-                throw new RuntimeException("Seat already booked");
+                throw new SeatNotAvailableException("Seat ID " + seat.getId() + " is already secured by someone else.");
             }
-            successfullyBooked.add(seat);
+            successfullyLocked.add(seat);
         }
 
         double total = seats.stream()
                 .mapToDouble(ShowSeat::getPrice)
                 .sum();
 
-        Payment payment = paymentService.processPayment(total, mode);
+        try {
+            Payment payment = paymentService.processPayment(total, mode);
 
-        return new Booking(
-                new Random().nextInt(),
-                show,
-                seats,
-                payment
-        );
+            // Confirm seats only after successful payment
+            for (ShowSeat seat : successfullyLocked) {
+                seat.confirmBooking();
+            }
+
+            return new Booking(
+                    new Random().nextInt(),
+                    show,
+                    seats,
+                    payment,
+                    user
+            );
+        } catch (Exception e) {
+            // Rollback seat locks if payment throws exceptions
+            for (ShowSeat seat : successfullyLocked) {
+                seat.release();
+            }
+            throw new PaymentFailedException("Payment failed or aborted: " + e.getMessage());
+        }
     }
 
     @Override

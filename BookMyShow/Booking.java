@@ -7,13 +7,15 @@ public class Booking {
 
     private BookingStatus status;
     private Payment payment;
+    private final User user;
 
-    public Booking(int id, Show show, List<ShowSeat> seats, Payment payment) {
+    public Booking(int id, Show show, List<ShowSeat> seats, Payment payment, User user) {
         this.id = id;
         this.show = show;
         this.seats = seats;
         this.payment = payment;
         this.status = BookingStatus.CONFIRMED;
+        this.user = user;
     }
 
     public void cancel() {

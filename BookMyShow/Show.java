@@ -22,7 +22,9 @@ public class Show {
         this.showSeats = showSeats;
     }
 
-    public List<ShowSeat> getShowSeats() {
-        return showSeats;
-    }
+    public List<ShowSeat> getShowSeats() { return showSeats; }
+    public Movie getMovie() { return movie; }
+    public Screen getScreen() { return screen; }
+    public ShowType getType() { return type; }
+    public Date getStartTime() { return startTime; }
 }
