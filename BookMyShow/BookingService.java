@@ -14,10 +14,8 @@ public class BookingService implements IBookingService {
     public Booking book(Show show, List<ShowSeat> seats, PaymentMode mode) {
         List<ShowSeat> successfullyBooked = new ArrayList<>();
 
-        // 1. Lock seats
         for (ShowSeat seat : seats) {
             if (!seat.book()) {
-                // Rollback successfully locked seats in this transaction
                 for (ShowSeat booked : successfullyBooked) {
                     booked.release();
                 }
@@ -26,15 +24,12 @@ public class BookingService implements IBookingService {
             successfullyBooked.add(seat);
         }
 
-        // 2. Calculate amount
         double total = seats.stream()
                 .mapToDouble(ShowSeat::getPrice)
                 .sum();
 
-        // 3. Payment
         Payment payment = paymentService.processPayment(total, mode);
 
-        // 4. Create booking
         return new Booking(
                 new Random().nextInt(),
                 show,

@@ -2,8 +2,8 @@ public class ShowSeat {
     private final int id;
     private final Seat seat;
 
-    private SeatType type;     // dynamic per show
-    private double price;      // dynamic
+    private SeatType type;
+    private double price;
 
     private boolean isBooked;
 
