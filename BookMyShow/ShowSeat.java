@@ -17,7 +17,6 @@ public class ShowSeat {
         this.lockedAt = 0;
     }
 
-    // Attempt to temporarily lock a seat. Automatically overrides locks older than 10 minutes.
     public synchronized boolean lockSeat() {
         long now = System.currentTimeMillis();
         

@@ -15,7 +15,6 @@ public class BookingService implements IBookingService {
     public Booking book(User user, Show show, List<ShowSeat> seats, PaymentMode mode) {
         List<ShowSeat> successfullyLocked = new ArrayList<>();
 
-        // Prevent deadlocks by sorting elements mathematically
         seats.sort(Comparator.comparingInt(ShowSeat::getId));
 
         for (ShowSeat seat : seats) {
@@ -35,7 +34,6 @@ public class BookingService implements IBookingService {
         try {
             Payment payment = paymentService.processPayment(total, mode);
 
-            // Confirm seats only after successful payment
             for (ShowSeat seat : successfullyLocked) {
                 seat.confirmBooking();
             }
@@ -48,7 +46,6 @@ public class BookingService implements IBookingService {
                     user
             );
         } catch (Exception e) {
-            // Rollback seat locks if payment throws exceptions
             for (ShowSeat seat : successfullyLocked) {
                 seat.release();
             }

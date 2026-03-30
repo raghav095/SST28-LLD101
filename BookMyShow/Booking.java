@@ -19,6 +19,10 @@ public class Booking {
     }
 
     public void cancel() {
+        if (System.currentTimeMillis() >= show.getStartTime().getTime()) {
+            throw new IllegalStateException("Cannot cancel after the show has started.");
+        }
+
         this.status = BookingStatus.CANCELLED;
 
         for (ShowSeat seat : seats) {
