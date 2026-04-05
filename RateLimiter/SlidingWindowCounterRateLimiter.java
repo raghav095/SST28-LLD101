@@ -1,12 +1,8 @@
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Sliding Window Counter Algorithm implementation.
- * More accurate than Fixed Window, avoids boundary spikes by interpolating across windows.
- */
 public class SlidingWindowCounterRateLimiter implements RateLimiter {
     private final int capacity;
-    private final long windowSizeMs; // size of each window in milliseconds
+    private final long windowSizeMs; 
     private long currentWindowStart;
     private int currentWindowCount;
     private int previousWindowCount;
@@ -31,7 +27,7 @@ public class SlidingWindowCounterRateLimiter implements RateLimiter {
             double overlapPercentage = (windowSizeMs - elapsedTimeInCurrentWindow) / (double) windowSizeMs;
             double weightedCount = overlapPercentage * previousWindowCount + currentWindowCount;
             
-            if (weightedCount < capacity) {
+            if (weightedCount < (double) capacity) {
                 currentWindowCount++;
                 return true;
             }

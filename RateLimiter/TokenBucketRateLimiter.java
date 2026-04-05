@@ -1,12 +1,8 @@
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Token Bucket Algorithm implementation.
- * Allows for bursts of traffic up to the bucket capacity.
- */
 public class TokenBucketRateLimiter implements RateLimiter {
     private final int capacity;
-    private final int refillRate; // tokens per second
+    private final int refillRate; 
     private double currentTokens;
     private long lastRefillTime;
     private final ReentrantLock lock = new ReentrantLock();

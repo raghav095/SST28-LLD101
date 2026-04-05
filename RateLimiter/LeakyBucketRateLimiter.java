@@ -1,12 +1,8 @@
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Leaky Bucket Algorithm implementation.
- * Smooths out traffic by allowing requests at a constant rate.
- */
 public class LeakyBucketRateLimiter implements RateLimiter {
     private final int capacity;
-    private final int leakRate; // tokens per second
+    private final int leakRate; 
     private double currentWater;
     private long lastLeakTime;
     private final ReentrantLock lock = new ReentrantLock();

@@ -1,20 +1,14 @@
 public class RateLimiterFactory {
-    /**
-     * Creates a RateLimiter based on the specified type and configuration.
-     * @param type The type of rate limiter to create.
-     * @param capacity The maximum capacity.
-     * @param rate The rate of refill/leak (per second) or the window size (in ms).
-     * @return A concrete RateLimiter instance.
-     */
-    public static RateLimiter createRateLimiter(RateLimiterType type, int capacity, int rate) {
+    public static RateLimiter createRateLimiter(RateLimiterType type, int capacity, long rateOrWindow) {
         switch (type) {
             case TOKEN_BUCKET:
-                return new TokenBucketRateLimiter(capacity, rate);
+                return new TokenBucketRateLimiter(capacity, (int) rateOrWindow);
             case LEAKY_BUCKET:
-                return new LeakyBucketRateLimiter(capacity, rate);
+                return new LeakyBucketRateLimiter(capacity, (int) rateOrWindow);
+            case FIXED_WINDOW:
+                return new FixedWindowRateLimiter(capacity, rateOrWindow);
             case SLIDING_WINDOW_COUNTER:
-                // Use default 1 second window for simplicity
-                return new SlidingWindowCounterRateLimiter(capacity, 1000L);
+                return new SlidingWindowCounterRateLimiter(capacity, rateOrWindow);
             default:
                 throw new IllegalArgumentException("Unknown rate limiter type: " + type);
         }
